@@ -20,18 +20,38 @@
 
 #include <iostream>
 #include "edge_feature_filter.hpp"
-#include "animation_filter.hpp"
 
+using namespace std;
 using namespace sketch;
 using namespace cv;
 
+/**
+ * Usgae: sketch-filter-edge image-name [output-image-name(default : output.jpg) [threshold(default : 180) [alpha(default : 5) ]]]
+ * alpha must be odd value
+ */
 int main(int argc, char* argv[])
 {
-    // edge_feature_filter edge("../Lenna.png", 3, 180);
-    animation_filter ani("../Lenna.png", 5, 0.75);
-    namedWindow("Display window", WINDOW_AUTOSIZE);
-    imshow("Display window", ani.src());
-    // imshow("Display window", edge.src());
-    waitKey(0);
+    string filename;
+    string outputname = "output.jpg";
+    int threshold = 180;
+    int alpha = 5;
+    switch(argc) {
+    case 5:
+        alpha = std::stoi(argv[4]);
+    case 4:
+        threshold = std::stoi(argv[3]);
+    case 3:
+        outputname = string(argv[2]);
+    case 2:
+        filename = string(argv[1]);
+        break;
+    default:
+        cerr << "sketch-filter-edge image-name [output-image-name(default : output.jpg) [threshold(default : 180) [alpha(default : 5) ]]]"
+             << endl << "alpha must be odd value" << endl;
+        return 0;
+    }
+
+    edge_feature_filter edge(filename, alpha, threshold);
+    imwrite(outputname, edge.src());
     return 0;
 }
