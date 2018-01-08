@@ -18,20 +18,42 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
 #include "edge_feature_filter.hpp"
-#include "animation_filter.hpp"
+
+#define fsrc() filter::src()
+#define msrc() maximum_filter::src()
+#define ssrc() sketch_filter::src()
 
 using namespace sketch;
 using namespace cv;
 
-int main(int argc, char* argv[])
+edge_feature_filter::edge_feature_filter(const std::string filename,
+        const uint alpha, const uchar threshold) : sketch_filter(filename, alpha) , _threshold(threshold)
 {
-    // edge_feature_filter edge("../Lenna.png", 3, 180);
-    animation_filter ani("../Lenna.png", 5, 0.75);
-    namedWindow("Display window", WINDOW_AUTOSIZE);
-    imshow("Display window", ani.src());
-    // imshow("Display window", edge.src());
-    waitKey(0);
-    return 0;
+    Mat edge_feature_filter(ssrc().rows, ssrc().cols, ssrc().type());
+    src() = std::move(edge_feature_filter);
+    process();
+}
+
+edge_feature_filter::~edge_feature_filter()
+{
+
+}
+
+cv::Mat& edge_feature_filter::src()
+{
+    return _edge_feature_filter;
+}
+
+void edge_feature_filter::process()
+{
+    for(int r = 0; r < fsrc().rows ; r++) {
+        for(int c = 0; c < fsrc().cols; c++) {
+            if(ssrc().at<uchar>(r, c) < _threshold) {
+                src().at<uchar>(r, c) = 0;
+            } else {
+                src().at<uchar>(r, c) = 255;
+            }
+        }
+    }
 }

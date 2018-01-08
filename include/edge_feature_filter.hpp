@@ -18,20 +18,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
-#include "edge_feature_filter.hpp"
-#include "animation_filter.hpp"
+#ifndef _EDGE_FEATURE_FILTER_HPP_
+#define _EDGE_FEATURE_FILTER_HPP_
 
-using namespace sketch;
-using namespace cv;
+#include <string>
+#include "sketch_filter.hpp"
 
-int main(int argc, char* argv[])
+namespace sketch
 {
-    // edge_feature_filter edge("../Lenna.png", 3, 180);
-    animation_filter ani("../Lenna.png", 5, 0.75);
-    namedWindow("Display window", WINDOW_AUTOSIZE);
-    imshow("Display window", ani.src());
-    // imshow("Display window", edge.src());
-    waitKey(0);
-    return 0;
+    class edge_feature_filter : public sketch_filter
+    {
+    public:
+        edge_feature_filter(const std::string filename, const uint alpha = 5, const uchar threshold = 150);
+        ~edge_feature_filter();
+
+        virtual cv::Mat& src();
+
+    protected:
+        void process();
+
+    private:
+        const uchar _threshold;
+        cv::Mat _edge_feature_filter;
+    };
 }
+
+#endif

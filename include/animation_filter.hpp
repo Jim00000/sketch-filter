@@ -18,20 +18,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
-#include "edge_feature_filter.hpp"
-#include "animation_filter.hpp"
+#ifndef _ANIMATION_FILTER_HPP_
+#define _ANIMATION_FILTER_HPP_
 
-using namespace sketch;
-using namespace cv;
+#include <string>
+#include "sketch_filter.hpp"
 
-int main(int argc, char* argv[])
+namespace sketch
 {
-    // edge_feature_filter edge("../Lenna.png", 3, 180);
-    animation_filter ani("../Lenna.png", 5, 0.75);
-    namedWindow("Display window", WINDOW_AUTOSIZE);
-    imshow("Display window", ani.src());
-    // imshow("Display window", edge.src());
-    waitKey(0);
-    return 0;
+    class animation_filter : public sketch_filter
+    {
+    public:
+        animation_filter(const std::string filename, const uint alpha = 5, const float beta = 0.5f);
+        ~animation_filter();
+
+        virtual cv::Mat& src();
+        const float beta() const;
+
+    protected:
+        void process(const std::string filename);
+
+    private:
+        const float _beta;
+        cv::Mat _ani_filter;
+    };
 }
+
+#endif
