@@ -1,7 +1,6 @@
 cmake_minimum_required (VERSION 3.0)
 
 set (CMAKE_CXX_STANDARD 11)
-set (CMAKE_BUILD_TYPE DEBUG)
 set (CMAKE_CXX_FLAGS_RELEASE "-Wall -O2") 
 set (CMAKE_CXX_FLAGS_DEBUG  "-Wall -O0 -g")
 
