@@ -59,7 +59,7 @@ void maximum_filter::process()
         for(int c = 0; c < fsrc().cols; c++) {
             double maxVal = 0.0;
             int row_start = adjust_zero_above(r - half_length);
-            int row_end = adjust_bound_below(r + half_length + 1, fsrc().cols);
+            int row_end = adjust_bound_below(r + half_length + 1, fsrc().rows);
             int col_start = adjust_zero_above(c - half_length);
             int col_end = adjust_bound_below(c + half_length + 1, fsrc().cols);
             Mat mask = fsrc().rowRange(row_start, row_end).colRange(col_start, col_end);
