@@ -64,7 +64,12 @@ void maximum_filter::process()
             int col_end = adjust_bound_below(c + half_length + 1, fsrc().cols);
             Mat mask = fsrc().rowRange(row_start, row_end).colRange(col_start, col_end);
             minMaxLoc(mask, nullptr, &maxVal);
-            src().at<uchar>(r, c) = maxVal;
+            // If maxVal is zero then set it to one to avoid divide by zero exception
+            if(maxVal == 0) {
+                src().at<uchar>(r, c) = 1;
+            } else {
+                src().at<uchar>(r, c) = maxVal;
+            }
         }
     }
 }
