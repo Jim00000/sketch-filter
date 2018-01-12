@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <omp.h>
 #include "animation_filter.hpp"
 
 #define fsrc() filter::src()
@@ -69,6 +70,8 @@ void animation_filter::process(const std::string filename)
 {  
     Mat img = imread(filename);
     const uchar M = sketch_filter::M();
+
+    #pragma omp parallel for collapse(2)
     for(int r = 0; r < img.rows ; r++) {
         for(int c = 0; c < img.cols; c++) {
             Vec3b rgb = img.at<Vec3b>(r, c);

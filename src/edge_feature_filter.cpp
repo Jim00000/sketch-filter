@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <omp.h>
 #include "edge_feature_filter.hpp"
 
 #define fsrc() filter::src()
@@ -47,6 +48,7 @@ cv::Mat& edge_feature_filter::src()
 
 void edge_feature_filter::process()
 {
+    #pragma omp parallel for collapse(2)
     for(int r = 0; r < fsrc().rows ; r++) {
         for(int c = 0; c < fsrc().cols; c++) {
             if(ssrc().at<uchar>(r, c) < _threshold) {

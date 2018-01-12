@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <omp.h>
 #include "maximum_filter.hpp"
 
 #define fsrc() filter::src()
@@ -55,6 +56,7 @@ void maximum_filter::process()
     const int half_length = static_cast<int>(_alpha) / 2;
     src() = std::move(max_filter);
 
+    #pragma omp parallel for collapse(2)
     for(int r = 0; r < fsrc().rows ; r++) {
         for(int c = 0; c < fsrc().cols; c++) {
             double maxVal = 0.0;

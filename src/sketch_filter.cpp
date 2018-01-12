@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <omp.h>
 #include "sketch_filter.hpp"
 
 #define fsrc() filter::src()
@@ -51,6 +52,7 @@ const uchar sketch_filter::M() const
 
 void sketch_filter::process()
 {
+    #pragma omp parallel for collapse(2)
     for(int r = 0; r < fsrc().rows ; r++) {
         for(int c = 0; c < fsrc().cols; c++) {
             src().at<uchar>(r, c) = M() * fsrc().at<uchar>(r, c) / msrc().at<uchar>(r, c);
