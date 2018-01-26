@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.0)
 set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_FLAGS_RELEASE "-Wall -O2") 
 set (CMAKE_CXX_FLAGS_DEBUG  "-Wall -O0 -g")
+set_property (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release")
 
 find_package ( OpenCV REQUIRED )
 find_package ( OpenMP REQUIRED )
