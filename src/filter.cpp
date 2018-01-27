@@ -29,6 +29,11 @@ filter::filter(const string filename, const int flags)
     src() = imread(filename, flags);
 }
 
+filter::filter(const cv::Mat& img)
+{
+    src() = img.clone();
+}
+
 filter::~filter()
 {
 }

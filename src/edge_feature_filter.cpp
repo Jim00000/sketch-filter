@@ -29,7 +29,15 @@ using namespace sketch;
 using namespace cv;
 
 edge_feature_filter::edge_feature_filter(const std::string filename,
-        const uint alpha, const uchar threshold) : sketch_filter(filename, alpha) , _threshold(threshold)
+        const uint alpha, const uchar threshold) : sketch_filter(filename, alpha), _threshold(threshold)
+{
+    Mat edge_feature_filter(ssrc().rows, ssrc().cols, ssrc().type());
+    src() = std::move(edge_feature_filter);
+    process();
+}
+
+edge_feature_filter::edge_feature_filter(const Mat& img, const uint alpha,
+        const uchar threshold) : sketch_filter(img, alpha), _threshold(threshold)
 {
     Mat edge_feature_filter(ssrc().rows, ssrc().cols, ssrc().type());
     src() = std::move(edge_feature_filter);
@@ -49,10 +57,12 @@ cv::Mat& edge_feature_filter::src()
 void edge_feature_filter::process()
 {
     #pragma omp parallel for collapse(2)
+
     for(int r = 0; r < fsrc().rows ; r++) {
         for(int c = 0; c < fsrc().cols; c++) {
             if(ssrc().at<uchar>(r, c) < _threshold) {
                 src().at<uchar>(r, c) = 0;
+
             } else {
                 src().at<uchar>(r, c) = 255;
             }

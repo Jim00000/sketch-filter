@@ -30,6 +30,7 @@ namespace sketch
     {
     public:
         maximum_filter(const std::string filename, const uint alpha = 5);
+        maximum_filter(const cv::Mat& img, const uint alpha = 5);
         ~maximum_filter();
 
         virtual cv::Mat& src();

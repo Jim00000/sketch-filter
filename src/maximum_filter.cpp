@@ -40,6 +40,12 @@ maximum_filter::maximum_filter(const std::string filename, const uint alpha) : f
     process();
 }
 
+maximum_filter::maximum_filter(const Mat& img, const uint alpha) : filter(img), _alpha(alpha)
+{
+    cvtColor(filter::src(), filter::src(), CV_BGR2GRAY);
+    process();
+}
+
 maximum_filter::~maximum_filter()
 {
 
@@ -57,6 +63,7 @@ void maximum_filter::process()
     src() = std::move(max_filter);
 
     #pragma omp parallel for collapse(2)
+
     for(int r = 0; r < fsrc().rows ; r++) {
         for(int c = 0; c < fsrc().cols; c++) {
             double maxVal = 0.0;
@@ -66,9 +73,11 @@ void maximum_filter::process()
             int col_end = adjust_bound_below(c + half_length + 1, fsrc().cols);
             Mat mask = fsrc().rowRange(row_start, row_end).colRange(col_start, col_end);
             minMaxLoc(mask, nullptr, &maxVal);
+
             // If maxVal is zero then set it to one to avoid divide by zero exception
             if(maxVal == 0) {
                 src().at<uchar>(r, c) = 1;
+
             } else {
                 src().at<uchar>(r, c) = maxVal;
             }

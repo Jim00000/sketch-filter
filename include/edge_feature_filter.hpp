@@ -30,6 +30,7 @@ namespace sketch
     {
     public:
         edge_feature_filter(const std::string filename, const uint alpha = 5, const uchar threshold = 150);
+        edge_feature_filter(const cv::Mat& img, const uint alpha = 5, const uchar threshold = 150);
         ~edge_feature_filter();
 
         virtual cv::Mat& src();

@@ -35,6 +35,13 @@ sketch_filter::sketch_filter(const std::string filename,
     process();
 }
 
+sketch_filter::sketch_filter(const Mat& img, const uint alpha) : maximum_filter(img, alpha)
+{
+    Mat sketch_filter(msrc().rows, msrc().cols, msrc().type());
+    src() = std::move(sketch_filter);
+    process();
+}
+
 sketch_filter::~sketch_filter()
 {
 

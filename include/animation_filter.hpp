@@ -30,6 +30,7 @@ namespace sketch
     {
     public:
         animation_filter(const std::string filename, const uint alpha = 5, const float beta = 0.5f);
+        animation_filter(const cv::Mat& img, const uint alpha = 5, const float beta = 0.5f);
         ~animation_filter();
 
         virtual cv::Mat& src();
@@ -37,6 +38,7 @@ namespace sketch
 
     protected:
         void process(const std::string filename);
+        void process(const cv::Mat& img);
 
     private:
         const float _beta;

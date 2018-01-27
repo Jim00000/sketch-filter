@@ -34,7 +34,7 @@ inline T tau_function(const T x, const T M) __attribute__((always_inline));
 template<typename T>
 inline T tau_function(const T x, const T M)
 {
-    return (x > M)? M : x;
+    return (x > M) ? M : x;
 }
 
 template<>
@@ -49,6 +49,14 @@ animation_filter::animation_filter(const std::string filename,
     Mat ani_filter(fsrc().rows, fsrc().cols, CV_8UC3);
     src() = std::move(ani_filter);
     process(filename);
+}
+
+animation_filter::animation_filter(const cv::Mat& img, const uint alpha,
+                                   const float beta)  : sketch_filter(img, alpha), _beta(beta)
+{
+    Mat ani_filter(fsrc().rows, fsrc().cols, CV_8UC3);
+    src() = std::move(ani_filter);
+    process(img);
 }
 
 animation_filter::~animation_filter()
@@ -67,11 +75,17 @@ const float animation_filter::beta() const
 }
 
 void animation_filter::process(const std::string filename)
-{  
+{
     Mat img = imread(filename);
+    process(img);
+}
+
+void animation_filter::process(const cv::Mat& img)
+{
     const uchar M = sketch_filter::M();
 
     #pragma omp parallel for collapse(2)
+
     for(int r = 0; r < img.rows ; r++) {
         for(int c = 0; c < img.cols; c++) {
             Vec3b rgb = img.at<Vec3b>(r, c);

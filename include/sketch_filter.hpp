@@ -30,6 +30,7 @@ namespace sketch
     {
     public:
         sketch_filter(const std::string filename, const uint alpha = 5);
+        sketch_filter(const cv::Mat& img, const uint alpha = 5);
         ~sketch_filter();
 
         virtual cv::Mat& src();
