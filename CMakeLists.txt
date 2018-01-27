@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
 
 set (CMAKE_CXX_STANDARD 11)
+set (BUILD_QT5_GUI ON CACHE BOOL "Build Qt5 GUI")
 set (CMAKE_CXX_FLAGS_RELEASE "-Wall -O2") 
 set (CMAKE_CXX_FLAGS_DEBUG  "-Wall -O0 -g")
 set_property (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug;Release")
@@ -21,3 +22,7 @@ endif ()
 include_directories (include/)
 add_subdirectory (src/)
 add_subdirectory (test/)
+
+if (BUILD_QT5_GUI)
+    add_subdirectory (gui/)
+endif ()
