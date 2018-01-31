@@ -32,8 +32,8 @@ EdgeWindow::EdgeWindow(QWidget* parent) : AniWindow(parent)
 {
     threshold = 0;
     beta_slider->setMaximum(255);
-    disconnect(beta_slider, &QSlider::valueChanged, this, &AniWindow::change_beta_event);
-    connect(beta_slider, &QSlider::valueChanged, this, &EdgeWindow::change_threshold_event);
+    disconnect(beta_slider.get(), &QSlider::valueChanged, this, &AniWindow::change_beta_event);
+    connect(beta_slider.get(), &QSlider::valueChanged, this, &EdgeWindow::change_threshold_event);
 }
 
 EdgeWindow::~EdgeWindow()

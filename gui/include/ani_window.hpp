@@ -21,6 +21,7 @@
 #ifndef __ANI_WINDOW_HPP__
 #define __ANI_WINDOW_HPP__
 
+#include <memory>
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
@@ -41,13 +42,13 @@ namespace sketch {
         protected:
 
         private:
-            QLabel* image;
-            QPushButton* loadBtn;
-            QPushButton* genBtn;
-            QPushButton* saveBtn;
-            QLineEdit* imagepath;
-            QSlider* alpha_slider;
-            QSlider* beta_slider;
+            std::unique_ptr<QLabel> image;
+            std::unique_ptr<QPushButton> loadBtn;
+            std::unique_ptr<QPushButton> genBtn;
+            std::unique_ptr<QPushButton> saveBtn;
+            std::unique_ptr<QLineEdit> imagepath;
+            std::unique_ptr<QSlider> alpha_slider;
+            std::unique_ptr<QSlider> beta_slider;
             cv::Mat src_image;
             cv::Mat dst_image;
             int alpha;

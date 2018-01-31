@@ -29,15 +29,15 @@ using namespace sketch::gui;
 
 AniWindow::AniWindow(QWidget* parent) : QWidget(parent)
 {
-    loadBtn = new QPushButton("Load image", this);
+    loadBtn = std::make_unique<QPushButton>("Load image", this);
     loadBtn->setGeometry(10, 10, 100, 30);
-    connect(loadBtn, &QPushButton::clicked, this, &AniWindow::load_image_path_event);
+    connect(loadBtn.get(), &QPushButton::clicked, this, &AniWindow::load_image_path_event);
 
-    imagepath = new QLineEdit(this);
+    imagepath = std::make_unique<QLineEdit>(this);
     imagepath->setGeometry(110 + 10, 10, 690, 30);
     imagepath->setReadOnly(true);
 
-    image = new QLabel(this);
+    image = std::make_unique<QLabel>(this);
     image->setGeometry(10, 50, 800, 600);
     QPixmap pixmap(500, 500);
     pixmap.fill(QColor("gray"));
@@ -45,7 +45,7 @@ AniWindow::AniWindow(QWidget* parent) : QWidget(parent)
     image->setScaledContents(true);
     image->show();
 
-    alpha_slider = new QSlider(Qt::Orientation::Horizontal, this);
+    alpha_slider = std::make_unique<QSlider>(Qt::Orientation::Horizontal, this);
     alpha_slider->setValue(0);
     alpha_slider->setGeometry(10, 660, 800, 30);
     alpha_slider->setMinimum(0);
@@ -53,9 +53,9 @@ AniWindow::AniWindow(QWidget* parent) : QWidget(parent)
     alpha_slider->setSingleStep(1);
     alpha_slider->setTickPosition(QSlider::TickPosition::TicksAbove);
     alpha_slider->setTickInterval(1);
-    connect(alpha_slider, &QSlider::valueChanged, this, &AniWindow::change_alpha_event);
+    connect(alpha_slider.get(), &QSlider::valueChanged, this, &AniWindow::change_alpha_event);
 
-    beta_slider = new QSlider(Qt::Orientation::Horizontal, this);
+    beta_slider = std::make_unique<QSlider>(Qt::Orientation::Horizontal, this);
     beta_slider->setValue(0);
     beta_slider->setGeometry(10, 700, 800, 30);
     beta_slider->setMinimum(0);
@@ -63,31 +63,31 @@ AniWindow::AniWindow(QWidget* parent) : QWidget(parent)
     beta_slider->setSingleStep(1);
     beta_slider->setTickPosition(QSlider::TickPosition::TicksAbove);
     beta_slider->setTickInterval(10);
-    connect(beta_slider, &QSlider::valueChanged, this, &AniWindow::change_beta_event);
+    connect(beta_slider.get(), &QSlider::valueChanged, this, &AniWindow::change_beta_event);
 
     alpha = 3;
     beta = 0.0;
     isImageRead = false;
     isOutput = false;
 
-    genBtn = new QPushButton("Generate", this);
+    genBtn = std::make_unique<QPushButton>("Generate", this);
     genBtn->setGeometry(10, 740, 100, 30);
-    connect(genBtn, &QPushButton::clicked, this, &AniWindow::generate_image_event);
+    connect(genBtn.get(), &QPushButton::clicked, this, &AniWindow::generate_image_event);
 
-    saveBtn = new QPushButton("Save image", this);
+    saveBtn = std::make_unique<QPushButton>("Save image", this);
     saveBtn->setGeometry(120, 740, 100, 30);
-    connect(saveBtn, &QPushButton::clicked, this, &AniWindow::save_image_event);
+    connect(saveBtn.get(), &QPushButton::clicked, this, &AniWindow::save_image_event);
 }
 
 AniWindow::~AniWindow()
 {
-    delete image;
-    delete loadBtn;
-    delete genBtn;
-    delete saveBtn;
-    delete imagepath;
-    delete alpha_slider;
-    delete beta_slider;
+    image.reset();
+    loadBtn.reset();
+    genBtn.reset();
+    saveBtn.reset();
+    imagepath.reset();
+    alpha_slider.reset();
+    beta_slider.reset();
 }
 
 void AniWindow::load_image_path_event()
