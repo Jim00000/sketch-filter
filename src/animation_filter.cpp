@@ -21,10 +21,6 @@
 #include <omp.h>
 #include "animation_filter.hpp"
 
-#define fsrc() filter::src()
-#define msrc() maximum_filter::src()
-#define ssrc() sketch_filter::src()
-
 using namespace sketch;
 using namespace cv;
 

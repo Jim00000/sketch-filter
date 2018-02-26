@@ -21,8 +21,6 @@
 #include <omp.h>
 #include "maximum_filter.hpp"
 
-#define fsrc() filter::src()
-
 using namespace std;
 using namespace sketch;
 using namespace cv;
