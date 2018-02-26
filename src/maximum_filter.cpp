@@ -33,66 +33,54 @@ inline T adjust_zero_above(T value) __attribute__((always_inline));
 template<typename T>
 inline T adjust_bound_below(T value, T bound) __attribute__((always_inline));
 
-maximum_filter::maximum_filter(const std::string filename, const uint alpha) : filter(filename),
-    _alpha(alpha)
+maximum_filter::maximum_filter(const uint alpha) : _alpha(alpha)
 {
-    cvtColor(filter::src(), filter::src(), CV_BGR2GRAY);
-    process();
-}
-
-maximum_filter::maximum_filter(const Mat& img, const uint alpha) : filter(img), _alpha(alpha)
-{
-    cvtColor(filter::src(), filter::src(), CV_BGR2GRAY);
-    process();
 }
 
 maximum_filter::~maximum_filter()
 {
-
 }
 
-Mat& maximum_filter::src()
+void
+maximum_filter::process(cv::Mat& src, cv::Mat& dst)
 {
-    return _max_filter;
-}
-
-void maximum_filter::process()
-{
-    Mat max_filter(fsrc().rows, fsrc().cols, fsrc().type());
+    Mat max_filter(src.rows, src.cols, src.type());
     const int half_length = static_cast<int>(_alpha) / 2;
-    src() = std::move(max_filter);
 
     #pragma omp parallel for collapse(2)
-
-    for(int r = 0; r < fsrc().rows ; r++) {
-        for(int c = 0; c < fsrc().cols; c++) {
+    for(int r = 0; r < src.rows ; r++) {
+        for(int c = 0; c < src.cols; c++) {
             double maxVal = 0.0;
             int row_start = adjust_zero_above(r - half_length);
-            int row_end = adjust_bound_below(r + half_length + 1, fsrc().rows);
+            int row_end = adjust_bound_below(r + half_length + 1, src.rows);
             int col_start = adjust_zero_above(c - half_length);
-            int col_end = adjust_bound_below(c + half_length + 1, fsrc().cols);
-            Mat mask = fsrc().rowRange(row_start, row_end).colRange(col_start, col_end);
+            int col_end = adjust_bound_below(c + half_length + 1, src.cols);
+            Mat mask = src.rowRange(row_start, row_end).colRange(col_start, col_end);
             minMaxLoc(mask, nullptr, &maxVal);
 
             // If maxVal is zero then set it to one to avoid divide by zero exception
             if(maxVal == 0) {
-                src().at<uchar>(r, c) = 1;
+                max_filter.at<uchar>(r, c) = 1;
 
             } else {
-                src().at<uchar>(r, c) = maxVal;
+                max_filter.at<uchar>(r, c) = maxVal;
             }
         }
     }
+
+    dst = std::move(max_filter);
 }
 
 template<typename T>
-inline T adjust_zero_above(T value)
+inline T
+adjust_zero_above(T value)
 {
     return value >= 0 ? value : 0;
 }
 
 template<typename T>
-inline T adjust_bound_below(T value, T bound)
+inline T
+adjust_bound_below(T value, T bound)
 {
     return value < bound ? value : bound - static_cast<T>(1);
 }

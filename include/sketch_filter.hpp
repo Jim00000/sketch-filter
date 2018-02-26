@@ -22,26 +22,23 @@
 #define _SKETCH_FILTER_HPP_
 
 #include <string>
+#include "IFilter.hpp"
 #include "maximum_filter.hpp"
 
 namespace sketch
 {
-    class sketch_filter : public maximum_filter
+    class sketch_filter : public IFilter
     {
     public:
-        sketch_filter(const std::string filename, const uint alpha = 5);
-        sketch_filter(const cv::Mat& img, const uint alpha = 5);
-        ~sketch_filter();
+        sketch_filter(const uint alpha = 5);
+        
+        virtual ~sketch_filter();
 
-        virtual cv::Mat& src();
-        const uchar M() const;
-
-    protected:
-        void process();
+        virtual void process(cv::Mat& src, cv::Mat& dst) override;
 
     private:
         const static uchar _M = 255;
-        cv::Mat _sketch_filter;
+        sketch::maximum_filter _max_filter;
     };
 }
 

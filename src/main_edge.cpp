@@ -51,7 +51,10 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    edge_feature_filter edge(filename, alpha, threshold);
-    imwrite(outputname, edge.src());
+    Mat src = imread(filename);
+    Mat dst;
+    edge_feature_filter edge(alpha, threshold);
+    edge.process(src, dst);
+    imwrite(outputname, dst);
     return 0;
 }

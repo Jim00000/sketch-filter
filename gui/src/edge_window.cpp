@@ -44,14 +44,15 @@ EdgeWindow::~EdgeWindow()
 void EdgeWindow::change_threshold_event(const int value)
 {
     threshold = value;
+    generate_image_event();
 }
 
 void EdgeWindow::generate_image_event()
 {
     if(isImageRead == true) {
         genBtn->setEnabled(false);
-        edge_feature_filter edge(src_image, alpha, threshold);
-        dst_image = edge.src();
+        edge_feature_filter edge(alpha, threshold);
+        edge.process(src_image, dst_image);
         image->setPixmap(QPixmap::fromImage(QImage(dst_image.data, dst_image.cols, dst_image.rows, dst_image.step,
                                             QImage::Format_Grayscale8)));
         image->setScaledContents(true);

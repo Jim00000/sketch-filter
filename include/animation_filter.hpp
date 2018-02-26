@@ -22,27 +22,23 @@
 #define _ANIMATION_FILTER_HPP_
 
 #include <string>
+#include "IFilter.hpp"
 #include "sketch_filter.hpp"
 
 namespace sketch
 {
-    class animation_filter : public sketch_filter
+    class animation_filter : public IFilter
     {
     public:
-        animation_filter(const std::string filename, const uint alpha = 5, const float beta = 0.5f);
-        animation_filter(const cv::Mat& img, const uint alpha = 5, const float beta = 0.5f);
-        ~animation_filter();
+        animation_filter(const uint alpha = 5, const float beta = 0.5f);
 
-        virtual cv::Mat& src();
-        const float beta() const;
+        virtual ~animation_filter();
 
-    protected:
-        void process(const std::string filename);
-        void process(const cv::Mat& img);
+        virtual void process(cv::Mat& src, cv::Mat& dst) override;
 
     private:
-        const float _beta;
-        cv::Mat _ani_filter;
+        float _beta;
+        sketch::sketch_filter _sketch_filter;
     };
 }
 

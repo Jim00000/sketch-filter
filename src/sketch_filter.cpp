@@ -27,19 +27,8 @@
 using namespace sketch;
 using namespace cv;
 
-sketch_filter::sketch_filter(const std::string filename,
-                             const uint alpha) : maximum_filter(filename, alpha)
+sketch_filter::sketch_filter(const uint alpha) : _max_filter(alpha)
 {
-    Mat sketch_filter(msrc().rows, msrc().cols, msrc().type());
-    src() = std::move(sketch_filter);
-    process();
-}
-
-sketch_filter::sketch_filter(const Mat& img, const uint alpha) : maximum_filter(img, alpha)
-{
-    Mat sketch_filter(msrc().rows, msrc().cols, msrc().type());
-    src() = std::move(sketch_filter);
-    process();
 }
 
 sketch_filter::~sketch_filter()
@@ -47,22 +36,16 @@ sketch_filter::~sketch_filter()
 
 }
 
-cv::Mat& sketch_filter::src()
-{
-    return _sketch_filter;
-}
 
-const uchar sketch_filter::M() const
+void sketch_filter::process(cv::Mat& src, cv::Mat& dst)
 {
-    return _M;
-}
-
-void sketch_filter::process()
-{
+    _max_filter.process(src, dst);
+    
     #pragma omp parallel for collapse(2)
-    for(int r = 0; r < fsrc().rows ; r++) {
-        for(int c = 0; c < fsrc().cols; c++) {
-            src().at<uchar>(r, c) = M() * fsrc().at<uchar>(r, c) / msrc().at<uchar>(r, c);
+    for(int r = 0; r < src.rows ; r++) {
+        for(int c = 0; c < src.cols; c++) {
+            dst.at<uchar>(r, c) = _M * src.at<uchar>(r, c) / dst.at<uchar>(r, c);
         }
     }
+
 }

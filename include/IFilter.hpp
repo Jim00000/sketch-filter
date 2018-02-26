@@ -18,27 +18,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "filter.hpp"
+#ifndef _IFILTER_HPP_
+#define _IFILTER_HPP_
 
-using namespace std;
-using namespace sketch;
-using namespace cv;
+#include <opencv2/opencv.hpp>
 
-filter::filter(const string filename, const int flags)
+namespace sketch
 {
-    src() = imread(filename, flags);
+    class IFilter
+    {
+    public:
+
+        virtual
+        ~IFilter() {}
+
+        virtual void process(cv::Mat& src, cv::Mat& dst) = 0;
+        
+    };
 }
 
-filter::filter(const cv::Mat& img)
-{
-    src() = img.clone();
-}
-
-filter::~filter()
-{
-}
-
-cv::Mat& filter::src()
-{
-    return _src;
-}
+#endif

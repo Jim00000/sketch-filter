@@ -22,25 +22,23 @@
 #define _EDGE_FEATURE_FILTER_HPP_
 
 #include <string>
+#include "IFilter.hpp"
 #include "sketch_filter.hpp"
 
 namespace sketch
 {
-    class edge_feature_filter : public sketch_filter
+    class edge_feature_filter : public IFilter
     {
     public:
-        edge_feature_filter(const std::string filename, const uint alpha = 5, const uchar threshold = 150);
-        edge_feature_filter(const cv::Mat& img, const uint alpha = 5, const uchar threshold = 150);
-        ~edge_feature_filter();
+        edge_feature_filter(const uint alpha = 5, const uchar threshold = 150);
 
-        virtual cv::Mat& src();
+        virtual ~edge_feature_filter();
 
-    protected:
-        void process();
+        virtual void process(cv::Mat& src, cv::Mat& dst) override;
 
     private:
-        const uchar _threshold;
-        cv::Mat _edge_feature_filter;
+        uchar _threshold;
+        sketch::sketch_filter _sketch_filter;
     };
 }
 

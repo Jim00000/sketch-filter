@@ -51,7 +51,10 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    animation_filter ani(filename, alpha, beta);
-    imwrite(outputname, ani.src());
+    Mat src = imread(filename);
+    Mat dst;
+    animation_filter ani(alpha, beta);
+    ani.process(src, dst);
+    imwrite(outputname, dst);
     return 0;
 }

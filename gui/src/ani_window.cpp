@@ -123,19 +123,21 @@ void AniWindow::save_image_event()
 void AniWindow::change_alpha_event(const int value)
 {
     alpha = 3 + 2 * value;
+    generate_image_event();
 }
 
 void AniWindow::change_beta_event(const int value)
 {
     beta = value / 100.0;
+    generate_image_event();
 }
 
 void AniWindow::generate_image_event()
 {
     if(isImageRead == true) {
         genBtn->setEnabled(false);
-        animation_filter ani(src_image, alpha, beta);
-        dst_image = ani.src();
+        animation_filter ani(alpha, beta);
+        ani.process(src_image, dst_image);
         Mat rst = dst_image.clone();
         cv::cvtColor(rst, rst, CV_BGR2RGB);
         image->setPixmap(QPixmap::fromImage(QImage(rst.data, rst.cols, rst.rows, rst.step,
