@@ -5,10 +5,11 @@ Implementation methods purposed from the paper **Sketch filter for feature extra
 # How to build
 
 ```
+$ git clone https://github.com/Jim00000/sketch-filter
 $ cd sketch-filter
 $ mkdir build
 $ cd build
-$ cmake -DCMAKE_BUILD_TYPE=RELEASE ..
+$ cmake ..  # or use cmake-gui ..
 $ make
 ```
 
