@@ -1,13 +1,13 @@
 cmake_minimum_required (VERSION 3.0)
 
 set (CMAKE_CXX_STANDARD 14)
-set (BUILD_QT5_GUI ON CACHE BOOL "Build Qt5 GUI")
-set (LIBRARY_ONLY OFF CACHE BOOL "Build library only")
+set (BUILD_QT5_GUI OFF CACHE BOOL "Build Qt5 GUI")
+set (LIBRARY_ONLY ON CACHE BOOL "Build library only")
 set (CMAKE_CXX_FLAGS_RELEASE "-Wall -O2") 
 set (CMAKE_CXX_FLAGS_DEBUG  "-Wall -O0 -g")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(STATUS "Setting build type to 'Debug' as none was specified.")
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
