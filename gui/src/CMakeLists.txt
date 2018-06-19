@@ -2,13 +2,13 @@ cmake_minimum_required (VERSION 3.0)
 
 qt5_wrap_cpp (
     QT5_MOC 
-    ${PROJECT_SOURCE_DIR}/gui/include/ani_window.hpp
+    ../include/ani_window.hpp
 )
 
 qt5_wrap_cpp (
     QT5_MOC_1 
-    ${PROJECT_SOURCE_DIR}/gui/include/ani_window.hpp
-    ${PROJECT_SOURCE_DIR}/gui/include/edge_window.hpp
+    ../include/ani_window.hpp
+    ../include/edge_window.hpp
 )
 
 add_executable (ani-qt ani_qt.cpp ani_window.cpp ${QT5_MOC})
